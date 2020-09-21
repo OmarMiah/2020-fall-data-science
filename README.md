@@ -1,4 +1,5 @@
 # Fall 2020 Data Science Repo
+<<<<<<< HEAD
 ---
 
 ### Office Hours
@@ -44,3 +45,7 @@ _Note, coursework and lessons may be subject to change based on classes needs._
 
 
 
+=======
+* Week 1: (9/8 - 9/11) Introduction to Data Science & working with Data in Pandas
+* Week 2: (9/15 - 9/18) Exploratory Data Analysis and Visualizations
+>>>>>>> 78b75877383f014493196f27aa433ca8b0aab7ab
