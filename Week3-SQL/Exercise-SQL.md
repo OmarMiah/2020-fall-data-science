@@ -189,18 +189,61 @@ For this section of the exercise we will be using the `bigquery-public-data.aust
 	```
 10. Which advertiser_name had the lowest average spend per ad that was at least above 0. 
 	``` 
-	FRIENDS OF EARL GRANVILLE
+		WITH
+	  TABLE_A AS (
+	  SELECT
+	    advertiser_name,
+	    COUNT(DISTINCT ad_id) AS n_ads
+	  FROM
+	    `bigquery-public-data.google_political_ads.creative_stats`
+	  WHERE
+	    regions = "US"
+	  GROUP BY
+	    advertiser_name),
+	  TABLE_B AS (
+	  SELECT
+	    advertiser_name,
+	    SUM(spend_usd) AS spend
+	  FROM
+	    `bigquery-public-data.google_political_ads.advertiser_weekly_spend`
+	  GROUP BY
+	    advertiser_name )
+	SELECT
+	  A.*,
+	  B.spend,
+	  B.spend / A.n_ads as avg_spend_per_ad
+	FROM
+	  TABLE_A AS A
+	JOIN
+	  TABLE_B AS B
+	ON
+	  A.advertiser_name = B.advertiser_name
+	WHERE B.spend / A.n_ads > 0
+	ORDER BY avg_spend_per_ad
+
 	```
 ## For this next section, use the `new_york_citibike` datasets.
 
 1. Who went on more bike trips, Males or Females?
 	```
+    SELECT
+	  gender,
+	  COUNT(*) AS n_trips
+	FROM
+	  `bigquery-public-data.new_york_citibike.citibike_trips`
+	GROUP BY
+	  gender
+
 	Males
 	```
 2. What was the average, shortest, and longest bike trip taken in minutes?
-	```
-	  AVG  | Shortest | Longest
-    962.49     60       19510049
+	```select 
+        avg(tripduration), 
+        max(tripduration), 
+        min(tripduration)
+        FROM
+	  `bigquery-public-data.new_york_citibike.citibike_trips`
+        
 	```
 
 3. Write a query that, for every station_name, has the amount of trips that started there and the amount of trips that ended there. (Hint, use two temporary tables, one that counts the amount of starts, the other that counts the number of ends, and then join the two.) 
